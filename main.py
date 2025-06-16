@@ -9,3 +9,4 @@ clips = [VideoFileClip(f) for f in video_files]
 final_clip = concatenate_videoclips(clips, method="compose")
 
 final_clip.write_videofile("output.mp4", codec="libx264", fps=24)
+
