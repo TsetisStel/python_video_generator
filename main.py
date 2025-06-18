@@ -1,9 +1,12 @@
 # from moviepy.editor import VideoFileClip, concatenate_videolips
 from moviepy import VideoFileClip, concatenate_videoclips
+from moviepy.video.fx.fadein import fadein
+from moviepy.video.fx.fadeout import fadeout
 from pathlib import Path
 
 folder = Path('./resources')
 
+fade_duration = 3.0 # seconds for the fade transition
 clips = []
 
 # List your video files
@@ -25,7 +28,7 @@ for video_path in video_files:
             break
 
         # Load and trim video
-        trimmed_clip = clip.subclipped(start, end)
+        trimmed_clip = clip.subclipped(start, end).fadein(fade_duration).fadeout(fade_duration)
         clips.append(trimmed_clip)
 
     except Exception as e:
@@ -33,7 +36,7 @@ for video_path in video_files:
 
 # Load and concatenate
 if clips:
-    final_clip = concatenate_videoclips(clips, method="compose")
+    final_clip = concatenate_videoclips(clips, method="compose", padding=-fade_duration)
     final_clip.write_videofile("output.mp4", codec="libx264", fps=24)
 else:
     print("No clips to process")
